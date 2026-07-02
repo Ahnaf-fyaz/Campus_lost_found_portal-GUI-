@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 700px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+header h1 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+nav a, nav span {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #2c3e50;
+}
+.flashes {
+    list-style: none;
+    padding: 10px;
+    background: #e0f7fa;
+    border-left: 4px solid #00838f;
+}
+form input, form button {
+    margin: 5px 0;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+form button {
+    background: #00838f;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
