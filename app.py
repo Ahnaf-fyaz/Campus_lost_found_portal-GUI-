@@ -182,22 +182,45 @@ def report_found():
 
         # ---- Matching & Notification (Linear Search) ----
         # Walk the lost list and find matches
-        cur = lost_list.head
-        while cur:
-            lost = cur.data
-            if lost['room'] == room and lost['floor'] == floor:
-                # Simple substring match
-                if item.lower() in lost['item'].lower() or lost['item'].lower() in item.lower():
-                    # Enqueue notification for the owner of the lost item
-                    owner = lost['username']
-                    if owner not in notif_queues:
-                        notif_queues[owner] = Queue()
-                    msg = (
-    f"Someone found an item similar to your lost '{lost['item']}' "
-    f"in room {room}, floor {floor}. "
-    f"Found: '{item}' (color {color}). "
-    f"Finder: {session['username']} "
-    f"Contact: {finder_phone}"
+        users = db.get_all_users()
+
+cur = lost_list.head
+while cur:
+    lost = cur.data
+    if lost['room'] == room and lost['floor'] == floor:
+        if item.lower() in lost['item'].lower() or lost['item'].lower() in item.lower():
+            owner = lost['username']
+
+            # Get finder's phone number
+            finder_data = next((u for u in users if u['username'] == session['username']), None)
+            finder_phone = finder_data['phone'] if finder_data else 'Not provided'
+
+            msg = (
+                f"Someone found an item similar to your lost '{lost['item']}' "
+                f"in room {room}, floor {floor}. "
+                f"Found: '{item}' (color {color}). "
+                f"Finder: {session['username']} "
+                f"Contact: {finder_phone}"
+            )
+
+            # Enqueue notification
+            if owner not in notif_queues:
+                notif_queues[owner] = Queue()
+            notif_queues[owner].enqueue(msg)
+            db.insert_notification(owner, msg)
+
+            # Send email
+            owner_data = next((u for u in users if u['username'] == owner), None)
+            if owner_data and owner_data.get('email'):
+                try:
+                    email_notifier.send_notification(
+                        owner_data['email'],
+                        "Lost Item Found Match!",
+                        msg
+                    )
+                except Exception as e:
+                    print(f"Email failed: {e}")
+    cur = cur.next
 )
                     notif_queues[owner].enqueue(msg)
                     # Also save notification to Google Sheets
