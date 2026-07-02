@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Report Found Item</h2>
+<form method="post">
+    Room Number: <input type="number" name="room" required><br>
+    Floor: <input type="number" name="floor" required><br>
+    Item Name: <input type="text" name="item" required><br>
+    Color: <input type="text" name="color" placeholder="e.g., Black" required><br>
+    Time Found: <input type="text" name="time" placeholder="e.g., 11:00 AM" required><br>
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

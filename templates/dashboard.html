@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+<ul>
+    <li><a href="{{ url_for('report_lost') }}">Report Lost Item</a></li>
+    <li><a href="{{ url_for('report_found') }}">Report Found Item</a></li>
+    <li><a href="{{ url_for('notifications') }}">View Notifications</a></li>
+    <li><a href="{{ url_for('undo') }}">Undo Last Action</a></li>
+</ul>
+{% endblock %}
