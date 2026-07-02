@@ -3,6 +3,7 @@ import config
 from data_structures import LinkedList, Stack, Queue, bubble_sort, binary_search
 import database as db          # <-- changed
 import email_notifier
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
@@ -298,4 +299,5 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
